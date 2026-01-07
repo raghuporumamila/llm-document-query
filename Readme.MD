@@ -1,5 +1,7 @@
 # Overview
-This simple integration demonstrates how one can build simple RAG document search. 
+This is a simple document search application that let the users to ask questions from the PDF contents.   
+This RAG implementation showcases ingesting the text from PDFs into the in-memory vector store, how to retrieve the chunks, 
+how to pass the question plus retrieved context to LLM
 # Running the Document Query API
 ## Update the dependencies
 pip install -r requirements.txt

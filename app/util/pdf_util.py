@@ -1,5 +1,8 @@
 from pypdf import PdfReader
 import io
+from pathlib import Path
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+
 
 def extract_text_from_pdf(pdf_bytes: bytes) -> str:
     reader = PdfReader(io.BytesIO(pdf_bytes))
@@ -12,8 +15,6 @@ def extract_text_from_pdf(pdf_bytes: bytes) -> str:
 
     return text
 
-from pathlib import Path
-
 def read_pdfs_as_bytes(folder_path: str):
     folder = Path(folder_path)
 
@@ -22,3 +23,14 @@ def read_pdfs_as_bytes(folder_path: str):
             pdf_bytes = f.read()
         yield pdf_file.name, pdf_bytes
 
+def split_multiple_pdfs(pdf_texts: dict):
+    splitter = RecursiveCharacterTextSplitter(
+        chunk_size=1000,
+        chunk_overlap=150
+    )
+    all_chunks = []
+    for filename, text in pdf_texts.items():
+        chunks = splitter.split_text(text)
+        all_chunks.extend(chunks)
+
+    return all_chunks
